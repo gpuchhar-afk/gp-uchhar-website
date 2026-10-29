@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>पंचायत एडमिन पैनल</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}
+header{background:#075e45;color:white;padding:20px;text-align:center}
+main{max-width:750px;margin:25px auto;padding:15px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:18px;box-shadow:0 2px 10px #00000010}
+h2{color:#075e45}
+input,textarea{width:100%;padding:12px;margin:8px 0 15px;border:1px solid #cbd5e1;border-radius:6px;font-size:16px}
+button{background:#087653;color:white;border:0;padding:12px 16px;border-radius:6px;font-size:15px;cursor:pointer}
+.back{color:white}
+.notice{border-bottom:1px solid #ddd;padding:12px 0;overflow-wrap:anywhere}
+small{color:#64748b}
+</style>
+</head>
+<body>
+<header>
+<h1>ग्राम पंचायत उछर</h1>
+<p>एडमिन पैनल</p>
+<a class="back" href="index.html">← मुख्य वेबसाइट पर जाएँ</a>
+</header>
+
+<main>
+<div class="card">
+<h2>सूचना प्रबंधन</h2>
+<p>यह प्रारंभिक पैनल सूचनाएँ इस डिवाइस के ब्राउज़र में सेव करता है। यह सुरक्षित लॉगिन या ऑनलाइन साझा डेटाबेस नहीं है।</p>
+<label for="title">सूचना का शीर्षक</label>
+<input id="title" placeholder="सूचना का शीर्षक लिखें">
+<label for="details">सूचना का विवरण</label>
+<textarea id="details" rows="4" placeholder="पूरी जानकारी लिखें"></textarea>
+<button onclick="addNotice()">सूचना सेव करें</button>
+</div>
+
+<div class="card">
+<h2>सेव की गई सूचनाएँ</h2>
+<div id="notices"></div>
+</div>
+</main>
+
+<script>
+const storageKey="uchhar_local_notices";
+
+function getNotices(){
+ try{return JSON.parse(localStorage.getItem(storageKey)||"[]")}
+ catch(e){return []}
+}
+
+function showNotices(){
+ const box=document.getElementById("notices");
+ const items=getNotices();
+ box.replaceChildren();
+
+ if(!items.length){
+  box.textContent="अभी कोई सूचना सेव नहीं है।";
+  return;
+ }
+
+ items.forEach((item,index)=>{
+  const article=document.createElement("article");
+  article.className="notice";
+  const heading=document.createElement("h3");
+  heading.textContent=item.title;
+  const detail=document.createElement("p");
+  detail.textContent=item.details;
+  const date=document.createElement("small");
+  date.textContent=item.date;
+  const del=document.createElement("button");
+  del.textContent="हटाएँ";
+  del.style.background="#b91c1c";
+  del.onclick=()=>{
+   if(confirm("क्या यह सूचना हटानी है?")){
+    const updated=getNotices();
+    updated.splice(index,1);
+    localStorage.setItem(storageKey,JSON.stringify(updated));
+    showNotices();
+   }
+  };
+  article.append(heading,detail,date,document.createElement("br"),del);
+  box.append(article);
+ });
+}
+
+function addNotice(){
+ const title=document.getElementById("title").value.trim();
+ const details=document.getElementById("details").value.trim();
+
+ if(!title||!details){
+  alert("शीर्षक और विवरण दोनों भरें।");
+  return;
+ }
+
+ const items=getNotices();
+ items.unshift({
+  title,
+  details,
+  date:new Date().toLocaleString("hi-IN")
+ });
+
+ try{
+  localStorage.setItem(storageKey,JSON.stringify(items));
+  document.getElementById("title").value="";
+  document.getElementById("details").value="";
+  showNotices();
+  alert("सूचना इस ब्राउज़र में सेव हो गई।");
+ }catch(e){
+  alert("सूचना सेव नहीं हो सकी।");
+ }
+}
+
+showNotices();
+</script>
+</body>
+</html>
