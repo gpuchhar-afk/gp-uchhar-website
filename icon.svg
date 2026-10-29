@@ -1,0 +1,10 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="100" fill="#075e45"/>
+  <path d="M80 240 L256 90 L432 240" fill="none" stroke="#ffffff" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M120 225 V420 H392 V225" fill="none" stroke="#ffffff" stroke-width="22" stroke-linejoin="round"/>
+  <rect x="220" y="300" width="72" height="120" rx="5" fill="#f5c451"/>
+  <rect x="150" y="270" width="48" height="48" rx="4" fill="#ffffff"/>
+  <rect x="314" y="270" width="48" height="48" rx="4" fill="#ffffff"/>
+  <text x="256" y="475" font-size="35" font-weight="bold" text-anchor="middle" fill="#ffffff">उछर</text>
+</svg>
